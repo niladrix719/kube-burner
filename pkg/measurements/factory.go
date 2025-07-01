@@ -136,10 +136,6 @@ func (msf *MeasurementsFactory) NewMeasurements(jobConfig *config.Job, kubeClien
 		}
 	}
 	for name, measurement := range mergedMeasurements {
-		if _, duplicate := ms.MeasurementsMap[name]; duplicate {
-			log.Warnf("Measurement [%s] is already registered", name)
-			continue
-		}
 		newMeasurementFactoryFunc, exists := measurementFactoryMap[name]
 		if !exists {
 			log.Warnf("Measurement [%s] is not supported", name)

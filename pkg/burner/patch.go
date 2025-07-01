@@ -29,7 +29,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 )
 
-func (ex *Executor) setupPatchJob(mapper meta.RESTMapper) {
+func (ex *JobExecutor) setupPatchJob(mapper meta.RESTMapper) {
 	log.Debugf("Preparing patch job: %s", ex.Name)
 	ex.itemHandler = patchHandler
 	if len(ex.ExecutionMode) == 0 {
@@ -44,11 +44,11 @@ func (ex *Executor) setupPatchJob(mapper meta.RESTMapper) {
 			log.Fatalln("Empty Patch Type not allowed")
 		}
 		log.Infof("Job %s: %s %s with selector %s", ex.Name, ex.JobType, o.Kind, labels.Set(o.LabelSelector))
-		ex.objects = append(ex.objects, newObject(o, mapper, APIVersionV1))
+		ex.objects = append(ex.objects, newObject(o, mapper, APIVersionV1, ex.embedCfg))
 	}
 }
 
-func patchHandler(ex *Executor, obj *object, originalItem unstructured.Unstructured, iteration int, objectTimeUTC int64, wg *sync.WaitGroup) {
+func patchHandler(ex *JobExecutor, obj *object, originalItem unstructured.Unstructured, iteration int, objectTimeUTC int64, wg *sync.WaitGroup) {
 	defer wg.Done()
 	// There are several patch modes. Three of them are client-side, and one
 	// of them is server-side.

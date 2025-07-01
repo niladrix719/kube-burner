@@ -7,7 +7,7 @@ Measurements can be configured at two levels:
 1. Global measurements: Defined in the global configuration section, these measurements will run for all jobs in the benchmark.
 2. Job-specific measurements: Defined within each job's configuration, these measurements only run for that specific job.
 
-If a measurement is defined both globally and in a job-specific configuration, the job-specific one takes precedence
+If a measurement is defined both globally and in a job-specific configuration, the job-specific one overrides matching fields in the global configuration. Fields not defined in the job-specific configuration will be inherited from the global one.
 
 Example of global measurements:
 ```yaml
@@ -15,9 +15,6 @@ global:
   measurements:
     - name: podLatency
     - name: serviceLatency
-
-jobs:
-  - name: job1
 ```
 
 Example of job-specific measurements:
